@@ -1,0 +1,96 @@
+coreDns:
+  enabled: true
+
+kubeDns:
+  enabled: false
+
+alertmanager:
+  persistentVolume:
+    enabled: true
+  alertmanagerSpec:
+    storage:
+      volumeClaimTemplate:
+        spec:
+          accessModes: ["ReadWriteOnce"]
+          resources:
+            requests:
+              storage: 10Gi
+
+prometheusOperator:
+  createCustomResource: false
+  global:
+   rbac:
+    create: true
+  
+prometheus:
+  prometheusSpec:
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          accessModes: ["ReadWriteOnce"]
+          resources:
+            requests:
+              storage: 10Gi
+
+# https://github.com/grafana/helm-charts/blob/main/charts/grafana/values.yaml
+grafana:
+
+  adminPassword: HelloWorld
+
+  ingress:
+    enabled: true
+    ingressClassName: nginx
+    annotations:
+      "nginx.ingress.kubernetes.io/ingress.class": nginx
+      "nginx.ingress.kubernetes.io/tls-acme": "false"
+    hosts:
+      - grafana.devopsdemos.com
+    grafana.ini:
+    server: 
+      domain: grafana.devopsdemos.com
+      root_url: https://grafana.devopsdemos.com/
+
+  persistence:
+    enabled: true
+    accessModes: ["ReadWriteOnce"]
+    size: 10Gi
+  dashboardProviders:
+    dashboardproviders.yaml:
+      apiVersion: 1
+      providers:
+      - name: 'default'
+        orgId: 1
+        folder: ''
+        type: file
+        disableDeletion: false
+        editable: true
+        options:
+          path: /var/lib/grafana/dashboards/default
+  # https://github.com/helm/charts/tree/master/stable/grafana#import-dashboards      
+  dashboards:
+    default:
+      nginx-ingress:
+        url: https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/grafana/dashboards/nginx.json
+      # https://grafana.com/api/dashboards/2/revisions/2/download
+      prometheus-stats: 
+        gnetId: 2
+        revision: 2
+        datasource: Prometheus
+
+      # https://grafana.com/api/dashboards/3831/revisions/1/download  
+      cluster-autoscaler:
+        gnetId: 3831
+        revision: 1
+        datasource: Prometheus
+      # https://grafana.com/api/dashboards/7589/revisions/5/download  
+      kafka:
+        gnetId: 7589
+        revision: 5
+        datasource: Prometheus
+      # https://grafana.com/api/dashboards/763/revisions/3/download  
+      redis:
+        gnetId: 763
+        revision: 3
+        datasource: Prometheus        
+
+      # https://grafana.com/api/dashboards/7173/revisions/2/download
