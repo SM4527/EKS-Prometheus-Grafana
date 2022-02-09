@@ -35,7 +35,7 @@ prometheus:
 # https://github.com/grafana/helm-charts/blob/main/charts/grafana/values.yaml
 grafana:
 
-  adminPassword: HelloWorld
+  adminPassword: 
 
   ingress:
     enabled: true
