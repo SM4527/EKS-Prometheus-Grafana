@@ -8,7 +8,7 @@
 
 # Project Title
 
-EKS-Prometheus-Grafana
+EKS-Prometheus-Grafana [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=EKS%20-%20Prometheus%20-%20Grafana&url=https://github.com/SM4527/EKS-Prometheus-Grafana)
 
 ## Description
 
